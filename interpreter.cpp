@@ -42,7 +42,7 @@ double Interpreter::expr(){
 
     qDebug() << currentToken.value;
 
-    while(currentToken.type == TokenType::Plus || currentToken.type == TokenType::Minus){
+    while(currentToken.type == TokenType::Plus || currentToken.type == TokenType::Minus || currentToken.type == TokenType::Pow){
 
         Token token = currentToken;
         if(token.type == TokenType::Plus){
@@ -52,8 +52,8 @@ double Interpreter::expr(){
             match(TokenType::Minus);
             result  -= term().toDouble();
         }else if(token.type == TokenType::Pow){
-            match(TokenType::Minus);
-            result   = pow(result, term().toDouble());
+            match(TokenType::Pow);
+            result = pow(result, expr());
         }
     }
     return result;
@@ -113,7 +113,7 @@ Token Interpreter::getNextToken(){
 
 QVariant Interpreter::term(){
    double result = factor().toDouble();
-    while(currentToken.type == TokenType::Mult || currentToken.type == TokenType::Div){
+    while(currentToken.type == TokenType::Mult || currentToken.type == TokenType::Div || currentToken.type == TokenType::Pow){
         Token token = currentToken;
         if(token.type == TokenType::Mult){
             match(TokenType::Mult);
@@ -121,6 +121,9 @@ QVariant Interpreter::term(){
         }else if(token.type == TokenType::Div){
             match(TokenType::Div);
             result /= factor().toDouble();
+        }else if(token.type == TokenType::Pow){
+            match(TokenType::Pow);
+            result = pow(result, factor().toDouble());
         }
     }
     return QVariant{result};
