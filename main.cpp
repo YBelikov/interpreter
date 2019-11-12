@@ -5,10 +5,9 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    QString exp = "(1+2)^(1+1)";
+    QString exp = "2^(-3)";
     Interpreter interp;
-    interp.setExpression(exp);
-    qDebug() << interp.expr();
+    qDebug() << interp.interpret(exp);
 
     return a.exec();
 }

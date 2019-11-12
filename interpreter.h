@@ -3,35 +3,21 @@
 
 #include <QString>
 #include <QVariant>
+#include "nodevisitor.h"
+#include "parser.h"
 
-enum class TokenType{Number, Plus, Minus, Div, Mult, LParen, RParen, Pow, EndOfText};
-
-struct Token{
-    QVariant value;
-    QChar symbol;
-    TokenType type;
-};
-
-class Interpreter
+class Interpreter : public NodeVisitor
 {
 
 private:
-
-    QString expression;
-    quint32 position;
-    Token currentToken;
-    void deleteWhiteSpaces();
-    void match(TokenType);
-    Token getNextToken();
-    void advance();
-    QString number();
-    QVariant term();
-    QVariant factor();
-
+    Parser parser;
 
 public:
     Interpreter();
-    double expr();
+    double interpret(const QString&);
+    QVariant visit(NumberNode *) override;
+    QVariant visit(BinaryOperationNode *) override;
+    QVariant visit(UnaryOperationNode *) override;
     void setExpression(const QString&);
 
 };
