@@ -4,7 +4,7 @@
 #include <QVariant>
 #include <QString>
 
-enum class TokenType{Number, Plus, Minus, Div, Mult, LParen, RParen, Pow, EndOfText};
+enum class TokenType{Number, Plus, Minus, Div, Mult, LParen, RParen, Pow, EndOfText, Error};
 
 class Token {
 public:

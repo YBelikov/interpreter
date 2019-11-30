@@ -8,6 +8,11 @@ BinaryOperationNode::BinaryOperationNode(ASTNode *l, Token token, ASTNode* r)
 }
 
 QVariant BinaryOperationNode::accept(NodeVisitor* visitor){
+   if(!left || !right){
+       QVariant error;
+       error.setValue(nullptr);
+       return error;
+   }
    return visitor->visit(this);
 }
 

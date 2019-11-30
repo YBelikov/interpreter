@@ -61,6 +61,10 @@ Token Lexer::getNextToken(){
         token.symbol = '^';
         ++position;
         return token;
+    }else{
+        token.type = TokenType::Error;
+        ++position;
+        return token;
     }
   }
     return token;
@@ -79,4 +83,8 @@ QString Lexer::number(){
     }
 
     return res;
+}
+
+void Lexer::reset(){
+    position = 0;
 }

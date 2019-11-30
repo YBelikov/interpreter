@@ -11,14 +11,19 @@ class Interpreter : public NodeVisitor
 
 private:
     Parser parser;
-
+    QVariant error(){
+        QVariant error{};
+        error.setValue(nullptr);
+        return error;
+    }
 public:
     Interpreter();
-    double interpret(const QString&);
+    QVariant interpret(const QString&);
     QVariant visit(NumberNode *) override;
     QVariant visit(BinaryOperationNode *) override;
     QVariant visit(UnaryOperationNode *) override;
     void setExpression(const QString&);
+    void reset();
 
 };
 

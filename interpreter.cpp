@@ -11,12 +11,13 @@ Interpreter::Interpreter()
 }
 
 QVariant Interpreter::visit(NumberNode* node){
-
+    if(!node) return error();
     return node->getValue();
 }
 
 QVariant Interpreter::visit(UnaryOperationNode* node){
-        if(node->operation.type == TokenType::Plus){
+
+    if(node->operation.type == TokenType::Plus){
             return node->child->accept(this);
         }else if(node->operation.type == TokenType::Minus){
             return QVariant{-node->child->accept(this).toDouble()};
@@ -25,27 +26,38 @@ QVariant Interpreter::visit(UnaryOperationNode* node){
 }
 
 QVariant Interpreter::visit(BinaryOperationNode* node){
+   QVariant leftOp = node->left->accept(this);
+   QVariant rightOp= node->right->accept(this);
+   if(leftOp.isNull() || rightOp.isNull()) return error();
    if(node->operation.type == TokenType::Plus){
-       return QVariant{node->left->accept(this).toDouble() + node->right->accept(this).toDouble()};
+       return leftOp.toDouble() + rightOp.toDouble();
    }else if(node->operation.type == TokenType::Minus){
-       return QVariant{node->left->accept(this).toDouble() - node->right->accept(this).toDouble()};
+       return leftOp.toDouble() - rightOp.toDouble();
    }else if(node->operation.type == TokenType::Mult){
-       return QVariant{node->left->accept(this).toDouble() * node->right->accept(this).toDouble()};
+       return leftOp.toDouble() * rightOp.toDouble();
    }else if(node->operation.type == TokenType::Div){
-       return QVariant{node->left->accept(this).toDouble() / node->right->accept(this).toDouble()};
+       if(rightOp.toDouble() == 0.0 ) return error();
+       return leftOp.toDouble() / rightOp.toDouble();
    }else if(node->operation.type == TokenType::Pow){
-       return QVariant{pow(node->left->accept(this).toDouble(), node->right->accept(this).toDouble())};
+       return pow(leftOp.toDouble(), rightOp.toDouble());
    }
-   return QVariant{};
+   return error();
 }
 
 
-double Interpreter::interpret(const QString& expr){
+
+QVariant Interpreter::interpret(const QString& expr){
        parser.setExpression(expr);
        ASTNode *root = parser.parse();
-       return root->accept(this).toDouble();
+       if(!root) return error();
+       QVariant res = root->accept(this);
+       if(res.isNull()) return error();
+       return res.toDouble();
 }
 
+void Interpreter::reset(){
+    parser.reset();
+}
 
 
 

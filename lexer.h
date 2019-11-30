@@ -10,6 +10,7 @@ public:
     Lexer();
     void setExpression(const QString&);
     Token getNextToken();
+    void reset();
 
 private:
 
@@ -17,6 +18,7 @@ private:
     QString expression;
     quint32 position;
     void advance();
+
     QString number();
 
 };

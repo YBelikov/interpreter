@@ -13,10 +13,12 @@ public:
 
     Parser();
     void setExpression(const QString& expr);
-    void match(TokenType);
+    int match(TokenType);
+    void reset();
     ASTNode* expr();
     ASTNode* term();
     ASTNode* factor();
+    ASTNode* exponent();
     ASTNode* parse();
 
 };

@@ -1,7 +1,11 @@
 QT -= gui
-
+QT += testlib
 CONFIG += c++17 console
 CONFIG -= app_bundle
+#TEMPLATE = subdirs
+TEMPLATE += app
+#TEMPLATE = subdirs
+#SUBDIRS = TestInterpreter
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -24,7 +28,8 @@ SOURCES += \
         numbernode.cpp \
         parser.cpp \
         token.cpp \
-        unaryoperationnode.cpp
+        unaryoperationnode.cpp \
+        variablenode.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -40,4 +45,5 @@ HEADERS += \
     numbernode.h \
     parser.h \
     token.h \
-    unaryoperationnode.h
+    unaryoperationnode.h \
+    variablenode.h
